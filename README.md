@@ -20,7 +20,7 @@ On linux, you can create a cron job ('crontab -e') as follows:
 
 This cron job will check for new posts every minute. A disadvantage is that if two new posts are created within a minute, one of those posts will be skipped. 
 
-Cron is unable to work with sub-minute resolution, but it is possible to set multipl cron jobs offset by a few seconds (from: https://stackoverflow.com/questions/9619362/running-a-cron-every-30-seconds).
+Cron is unable to work with sub-minute resolution, but it is possible to set multiple cron jobs offset by a few seconds (from: https://stackoverflow.com/questions/9619362/running-a-cron-every-30-seconds).
 
 For example, this cron job will make the bot check every 10 seconds:
 
