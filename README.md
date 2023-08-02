@@ -9,7 +9,7 @@ However, the websockets were deprecated in favor for HTTP requests.
 
 This implementation uses cURL to achieve the same effect. 
 
-For automation, a cron job is used to run this python script every few seconds.
+For automation, a cron job is used to run this python script every minute.
 
 
 # Deployment
