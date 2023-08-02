@@ -5,7 +5,6 @@ import requests
 
 community_name = "plantid"                      # Community that the bot will operate on
 instance_url = "https://mander.xyz"             # The instance where the bot lives
-stickied_posts = 1                              # The number of stickied posts in the community
 LEMMY_JWT =  ""                                 # The auth token for the bot
 PLANTNET_API_KEY = ""                           # The free API-key from plantnet.org
 OLDID_FOLDER_PATH = ""                                 # Folder where the file 'old.txt' that contains the previous newest post ID will be stored
@@ -14,7 +13,8 @@ def getNewestPost():
  command = f"curl -s '{instance_url}/api/v3/post/list?community_name={community_name}&sort=New'"
  stdout = Popen(command, shell=True, stdout=PIPE).stdout
  output = json.load(stdout) 
- return output['posts'][stickied_posts]['post']
+ posts = [i for i in output['posts'] if i['post']['featured_community'] == False]  # Filter out stickied posts
+ return posts[0]['post']
 
 
 
