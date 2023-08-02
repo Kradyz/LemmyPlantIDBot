@@ -12,14 +12,13 @@ OLDID_FOLDER_PATH = ""                                 # Folder where the file '
 def getNewestPost():
  command = f"curl -s '{instance_url}/api/v3/post/list?community_name={community_name}&sort=New'"
  stdout = Popen(command, shell=True, stdout=PIPE).stdout
- output = json.load(stdout) 
+ output = json.load(stdout)
  posts = [i for i in output['posts'] if i['post']['featured_community'] == False]  # Filter out stickied posts
  return posts[0]['post']
 
 
 
-def identify(Post):
- img_url = Post['url']
+def identify(img_url):
  plant_id = requests.get(f'https://my-api.plantnet.org/v2/identify/all?api-key={PLANTNET_API_KEY}', {
         'images': [img_url],
         'organs': ['auto']
@@ -30,14 +29,15 @@ def identify(Post):
   common_name = result['species']['commonNames'][0] if len(result['species']['commonNames']) != 0 else '/'
   scientific_name = result['species']['scientificNameWithoutAuthor']
   score = format(result['score'] * 100, '.2f')
-  table += f'|{common_name}|{scientific_name}|{score} %|\\n'
+  table += f"|{common_name}|{scientific_name}|{score} %|\\n"
 
- comment_text = f'''**Automatic identification via PlantNet summary**\\n\\n\\nMost likely match: **{plant_id['bestMatch']}**\\n\\n\\n|Common name|Scientific name|Likeliness|\\n|-|-|-|\\n{table}\\nBeep, boop\\n\\n\\nI am a bot, and this action was performed automatically.'''
+ comment_text = f'''**Automatic identification via PlantNet summary**\\n\\n\\nMost likely match: **{plant_id['bestMatch']}**\\n\\n\\n|Common name|Scientific name|Likeliness|\\n|-|-|-|\\n{table}\\nBeep, boop\\n\\n\\nI am a bot, and this action was performed automatically.'''.replace("'"," ")
+ print(comment_text)
  return comment_text
 
 
 def createComment(postId, comment):
- command = '''curl -i -H \
+ command = '''curl -s -i -H \
  "Content-Type: application/json" \
  -X POST \
  -d '{
@@ -46,9 +46,8 @@ def createComment(postId, comment):
    "content": "%s"
  }' \
  https://mander.xyz/api/v3/comment ''' % (postId,LEMMY_JWT,comment)
- print(command)
+ #print(command)
  os.system(command)
-
 
 #### Initialize ####
 
@@ -67,18 +66,16 @@ with open(f'{OLDID_FOLDER_PATH}/old.txt','r') as old:
 
 newestPost = getNewestPost()
 newestPostId = newestPost['id']
-print(oldId)
-print(newestPostId)
 
 img_extensions = 'jpgpngjpegtiftiff'
 
 
-with open(f'{OLDID_FOLDER_PATH}/old.txt','w') as old:
- old.write(str(newestPostId))
 
-if (newestPostId != oldId) & ('url' in newestPost):
+if (newestPostId > oldId) & ('url' in newestPost):
+ with open(f'{OLDID_FOLDER_PATH}/old.txt','w') as old:
+  old.write(str(newestPostId))
  img_url = newestPost['url']
  extension = img_url.split('.')[-1].lower()
  if extension in img_extensions:
-  comment = identify(newestPost)
-  createComment(newestPostId,comment) 
+  comment = identify(img_url)
+  createComment(newestPostId,comment)
