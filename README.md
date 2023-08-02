@@ -24,9 +24,9 @@ Cron is unable to work with sub-minute resolution, but it is possible to set mul
 
 For example, this cron job make the bot check every 10 seconds:
 
-`* * * * * /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py`
-`* * * * * (sleep 10; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
-`* * * * * (sleep 20; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
-`* * * * * (sleep 30; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
-`* * * * * (sleep 40; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
-`* * * * * (sleep 50; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
+`* * * * * /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py
+* * * * * (sleep 10; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)
+* * * * * (sleep 20; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)
+* * * * * (sleep 30; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)
+* * * * * (sleep 40; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)
+* * * * * (sleep 50; /usr/bin/python3 /home/bots/PlantID/PlantIDBot.py)`
